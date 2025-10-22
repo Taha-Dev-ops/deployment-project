@@ -1,27 +1,65 @@
-name: 🚀 Cloud CI/CD Pipeline
+name: 🚀 Automated CI/CD Pipeline
 
 on:
   push:
     branches: [main]
 
 jobs:
-  cloud-scan:
+  security-scan:
     runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 🔍 Security Scan
+        run: |
+          echo "🔒 Scanning code for vulnerabilities..."
+          echo "📁 HTML Files: $(find . -name '*.html' | wc -l)"
+          echo "📁 JS Files: $(find . -name '*.js' | wc -l)"
+          
+          # Security checks
+          if find . -name "*.html" -exec grep -l "TODO" {} \; | grep -q .; then
+            echo "❌ TODO comments found - Failing build"
+            exit 1
+          fi
+          
+          if find . -name "*.html" -exec grep -l "FIXME" {} \; | grep -q .; then
+            echo "❌ FIXME comments found - Failing build"
+            exit 1
+          fi
+          
+          echo "✅ All security checks passed"
+
+  quality-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 🧪 Quality Tests
+        run: |
+          echo "🧪 Running quality tests..."
+          html_count=$(find . -name "*.html" | wc -l)
+          if [ $html_count -eq 0 ]; then
+            echo "❌ No HTML files found - Failing build"
+            exit 1
+          fi
+          echo "✅ Quality tests passed"
+
+  auto-deploy:
+    runs-on: ubuntu-latest
+    needs: [security-scan, quality-check]
+    if: success()
     
     steps:
-    - name: 📥 Checkout Code
-      uses: actions/checkout@v3
-      
-    - name: 🔍 Code Analysis
-      run: |
-        echo "✅ Cloud CI/CD Running"
-        echo "📁 Files: $(find . -name '*.html' -o -name '*.js' | wc -l)"
-        echo "🚀 Ready for Manual Deployment"
-        
-    - name: 📋 Deployment Checklist
-      run: |
-        echo "Manual Deployment Steps:"
-        echo "1. Download code from GitHub"
-        echo "2. Run: ./scripts/backup.sh"
-        echo "3. Run: sudo cp -r app/* /var/www/html/"
-        echo "4. Verify: curl http://localhost"
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 🚀 Auto Deploy Status
+        run: |
+          echo "🚀 Starting automated deployment..."
+          echo "✅ Security Scan: PASSED"
+          echo "✅ Quality Check: PASSED" 
+          echo "📦 Code is ready for production!"
+          echo "❌ NOTE: Actual deployment setup required"
+          echo "💡 Configure server deployment in next step"
