@@ -25,12 +25,22 @@
             text-shadow: var(--accent-glow); margin-bottom: 1rem;
         }
         .subtitle { color: var(--text-secondary); font-size: 1.2rem; }
-        .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+        .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+        
+        /* SAB CARDS EK JAISA SIZE */
         .card {
-            background: var(--bg-card); padding: 1.5rem; border-radius: 20px;
-            border: 1px solid rgba(0, 255, 255, 0.1); backdrop-filter: blur(10px);
-            transition: all 0.3s ease; position: relative; overflow: hidden;
-            height: fit-content;
+            background: var(--bg-card); 
+            padding: 1.8rem; 
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.1); 
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease; 
+            position: relative; 
+            overflow: hidden;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .card::before {
             content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
@@ -39,40 +49,52 @@
         }
         .card:hover::before { left: 100%; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2); }
-        .card h3 { color: var(--accent); margin-bottom: 1rem; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
-        .stat { font-size: 2.2rem; font-weight: bold; margin: 0.5rem 0; }
+        
+        .card h3 { color: var(--accent); margin-bottom: 1rem; font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem; }
+        .stat { font-size: 2.5rem; font-weight: bold; margin: 0.5rem 0; }
         .status-badge {
-            display: inline-block; padding: 0.4rem 0.8rem; border-radius: 20px;
-            font-weight: bold; text-transform: uppercase; font-size: 0.8rem;
+            display: inline-block; padding: 0.5rem 1rem; border-radius: 20px;
+            font-weight: bold; text-transform: uppercase; font-size: 0.9rem;
         }
         .status-running { background: var(--success); color: var(--bg-primary); animation: pulse 2s infinite; }
-        .time-display { font-family: 'Courier New', monospace; font-size: 1.1rem; color: var(--accent); text-shadow: var(--accent-glow); margin: 0.5rem 0; }
-        .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 0.8rem; }
-        .metric-item { text-align: center; padding: 0.8rem; background: rgba(255, 255, 255, 0.05); border-radius: 8px; }
-        .metric-value { font-size: 1.4rem; font-weight: bold; color: var(--accent); }
-        .metric-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.3rem; }
-        .progress-bar { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 8px; margin-top: 8px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #ff00ff); border-radius: 8px; transition: width 0.5s ease; }
-        .server-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-top: 0.8rem; }
-        .stat-card { background: rgba(255, 255, 255, 0.05); padding: 0.8rem; border-radius: 8px; text-align: center; }
-        .stat-value { font-size: 1.2rem; font-weight: bold; color: var(--accent); margin: 0.3rem 0; }
-        .stat-label { font-size: 0.7rem; color: var(--text-secondary); }
-        .network-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 0.8rem; }
-        .deployment-history { margin-top: 0.8rem; }
+        .time-display { font-family: 'Courier New', monospace; font-size: 1.3rem; color: var(--accent); text-shadow: var(--accent-glow); margin: 0.5rem 0; }
+        
+        .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; }
+        .metric-item { text-align: center; padding: 1rem; background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
+        .metric-value { font-size: 1.6rem; font-weight: bold; color: var(--accent); }
+        .metric-label { font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem; }
+        
+        .network-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; }
+        
+        .deployment-history { margin-top: 0.5rem; }
         .deployment-item { 
-            display: flex; justify-content: between; align-items: center; 
-            padding: 0.5rem; background: rgba(255, 255, 255, 0.03); 
-            border-radius: 6px; margin-bottom: 0.5rem; font-size: 0.8rem;
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 0.8rem; background: rgba(255, 255, 255, 0.03); 
+            border-radius: 8px; margin-bottom: 0.5rem; font-size: 0.9rem;
         }
         .deploy-time { color: var(--accent); font-family: 'Courier New', monospace; }
-        .deploy-status { color: var(--success); font-size: 0.7rem; }
+        .deploy-status { color: var(--success); font-size: 0.8rem; }
+        
+        .server-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .stat-card { background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 10px; text-align: center; }
+        .stat-value { font-size: 1.4rem; font-weight: bold; color: var(--accent); margin: 0.5rem 0; }
+        .stat-label { font-size: 0.8rem; color: var(--text-secondary); }
+        
+        .progress-bar { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.1); border-radius: 8px; margin-top: 8px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #ff00ff); border-radius: 8px; transition: width 0.5s ease; }
+        
         .footer { text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-secondary); }
+        
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
         @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
         .floating { animation: float 3s ease-in-out infinite; }
+        
         @media (max-width: 768px) {
-            .header h1 { font-size: 2.5rem; } .dashboard { grid-template-columns: 1fr; }
-            .metrics { grid-template-columns: 1fr; } .server-stats { grid-template-columns: 1fr 1fr; }
+            .header h1 { font-size: 2.5rem; } 
+            .dashboard { grid-template-columns: 1fr; }
+            .metrics { grid-template-columns: 1fr; } 
+            .server-stats { grid-template-columns: 1fr 1fr; }
+            .card { min-height: auto; padding: 1.5rem; }
         }
     </style>
 </head>
@@ -84,7 +106,7 @@
         </div>
 
         <div class="dashboard">
-            <!-- Existing Cards -->
+            <!-- Card 1: Deployment Info -->
             <div class="card">
                 <h3>📊 Deployment Info</h3>
                 <div class="stat">v3.1.0</div>
@@ -92,11 +114,13 @@
                 <div class="status-badge status-running">Production Live</div>
             </div>
 
+            <!-- Card 2: System Time -->
             <div class="card">
                 <h3>🕒 System Time</h3>
                 <div id="liveTime" class="time-display">Loading...</div>
             </div>
 
+            <!-- Card 3: Deployment Metrics -->
             <div class="card">
                 <h3>📈 Deployment Metrics</h3>
                 <div class="metrics">
@@ -111,7 +135,7 @@
                 </div>
             </div>
 
-            <!-- NEW: Network Status Card -->
+            <!-- Card 4: Network Status -->
             <div class="card">
                 <h3>🌐 Network Status</h3>
                 <div class="network-stats">
@@ -134,7 +158,7 @@
                 </div>
             </div>
 
-            <!-- NEW: Deployment History Card -->
+            <!-- Card 5: Deployment History -->
             <div class="card">
                 <h3>📋 Deployment History</h3>
                 <div class="deployment-history">
@@ -153,6 +177,7 @@
                 </div>
             </div>
 
+            <!-- Card 6: Last Deployment -->
             <div class="card">
                 <h3>🔧 Last Deployment</h3>
                 <div id="lastRefresh" class="time-display">12:16:06 AM</div>
