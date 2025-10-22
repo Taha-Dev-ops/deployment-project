@@ -160,6 +160,48 @@
             margin-top: 0.5rem;
         }
 
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), #ff00ff);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .server-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 0.5rem 0;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
         .footer {
             text-align: center;
             margin-top: 3rem;
@@ -187,6 +229,7 @@
             .header h1 { font-size: 2.5rem; }
             .dashboard { grid-template-columns: 1fr; }
             .metrics { grid-template-columns: 1fr; }
+            .server-stats { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
@@ -194,7 +237,7 @@
     <div class="container">
         <div class="header floating">
             <h1>🚀 Taha Deployment Hub</h1>
-            <p class="subtitle">Real-time Deployment Monitoring Dashboard</p>
+            <p class="subtitle">Real-time Server Monitoring Dashboard</p>
         </div>
 
         <div class="dashboard">
@@ -227,6 +270,42 @@
             <div class="card">
                 <h3>🔧 Last Activity</h3>
                 <div id="lastRefresh" class="time-display">Loading...</div>
+            </div>
+        </div>
+
+        <!-- NEW SERVER STATS SECTION -->
+        <div class="card">
+            <h3>🖥️ Live Server Performance</h3>
+            <div class="server-stats">
+                <div class="stat-card">
+                    <div class="stat-label">CPU Usage</div>
+                    <div class="stat-value" id="cpuUsage">--%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="cpuBar" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">RAM Usage</div>
+                    <div class="stat-value" id="ramUsage">--%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="ramBar" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">Disk Usage</div>
+                    <div class="stat-value" id="diskUsage">--%</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="diskBar" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-label">Server Uptime</div>
+                    <div class="stat-value" id="serverUptime">--</div>
+                    <div class="stat-label">Days:Hours:Minutes</div>
+                </div>
             </div>
         </div>
 
@@ -264,14 +343,43 @@
             counter.textContent = count + 1;
         }
 
+        // Simulate server metrics (frontend only - for demo)
+        function updateServerMetrics() {
+            // CPU usage simulation
+            const cpu = 25 + Math.random() * 50;
+            document.getElementById('cpuUsage').textContent = Math.round(cpu) + '%';
+            document.getElementById('cpuBar').style.width = Math.round(cpu) + '%';
+            
+            // RAM usage simulation  
+            const ram = 30 + Math.random() * 40;
+            document.getElementById('ramUsage').textContent = Math.round(ram) + '%';
+            document.getElementById('ramBar').style.width = Math.round(ram) + '%';
+            
+            // Disk usage simulation
+            const disk = 40 + Math.random() * 30;
+            document.getElementById('diskUsage').textContent = Math.round(disk) + '%';
+            document.getElementById('diskBar').style.width = Math.round(disk) + '%';
+            
+            // Uptime simulation
+            const days = Math.floor(Math.random() * 30);
+            const hours = Math.floor(Math.random() * 24);
+            const mins = Math.floor(Math.random() * 60);
+            document.getElementById('serverUptime').textContent = 
+                days + ':' + hours.toString().padStart(2, '0') + ':' + mins.toString().padStart(2, '0');
+        }
+
         // Initialize everything
         function initDashboard() {
             updateLiveTime();
             updateRefreshTime();
             incrementCounter();
+            updateServerMetrics();
             
             // Update time every second
             setInterval(updateLiveTime, 1000);
+            
+            // Update metrics every 5 seconds
+            setInterval(updateServerMetrics, 5000);
             
             console.log('🚀 Taha Dashboard initialized successfully!');
         }

@@ -1,4 +1,4 @@
-name: 🚀 Fully Automated CI/CD Deployment
+name: 🚀 Self-Hosted CI/CD Deployment
 
 on:
   push:
@@ -13,19 +13,15 @@ jobs:
 
       - name: 🔍 Security Scan
         run: |
-          echo "🔒 Scanning code for vulnerabilities..."
-          echo "📁 Files found:"
-          find . -name "*.html" -o -name "*.js" -o -name "*.yml" | head -10
-          
-          # Security checks
+          echo "🔒 Scanning code..."
           if find . -name "*.html" -exec grep -l "TODO\|FIXME" {} \; | grep -q .; then
             echo "❌ TODO/FIXME comments found - Failing build"
             exit 1
           fi
-          echo "✅ All security checks passed"
+          echo "✅ Security checks passed"
 
   automated-deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: security-scan
     if: success()
     
@@ -33,20 +29,11 @@ jobs:
       - name: 📥 Checkout Code
         uses: actions/checkout@v3
 
-      - name: 🚀 Deploy to Production Server
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            echo "=== 🚀 STARTING AUTOMATED DEPLOYMENT ==="
-            cd /var/deployment-project
-            echo "1. Pulling latest code..."
-            git pull origin main
-            echo "2. Restarting web server..."
-            sudo systemctl restart nginx
-            echo "3. Checking deployment status..."
-            curl -s http://localhost | head -5
-            echo "=== ✅ DEPLOYMENT COMPLETED SUCCESSFULLY ==="
-            echo "🌐 Live Website: http://${{ secrets.SERVER_HOST }}"
+      - name: 🚀 Auto Deploy
+        run: |
+          echo "✅ Running on self-hosted runner!"
+          cd /var/deployment-project
+          git pull origin main
+          sudo systemctl restart nginx
+          echo "🚀 Deployment completed successfully!"
+          echo "🌐 Website: http://localhost"
