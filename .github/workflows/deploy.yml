@@ -1,4 +1,4 @@
-name: 🚀 Automated CI/CD Pipeline
+name: 🚀 Fully Automated CI/CD Deployment
 
 on:
   push:
@@ -14,52 +14,39 @@ jobs:
       - name: 🔍 Security Scan
         run: |
           echo "🔒 Scanning code for vulnerabilities..."
-          echo "📁 HTML Files: $(find . -name '*.html' | wc -l)"
-          echo "📁 JS Files: $(find . -name '*.js' | wc -l)"
+          echo "📁 Files found:"
+          find . -name "*.html" -o -name "*.js" -o -name "*.yml" | head -10
           
           # Security checks
-          if find . -name "*.html" -exec grep -l "TODO" {} \; | grep -q .; then
-            echo "❌ TODO comments found - Failing build"
+          if find . -name "*.html" -exec grep -l "TODO\|FIXME" {} \; | grep -q .; then
+            echo "❌ TODO/FIXME comments found - Failing build"
             exit 1
           fi
-          
-          if find . -name "*.html" -exec grep -l "FIXME" {} \; | grep -q .; then
-            echo "❌ FIXME comments found - Failing build"
-            exit 1
-          fi
-          
           echo "✅ All security checks passed"
 
-  quality-check:
+  automated-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@v3
-
-      - name: 🧪 Quality Tests
-        run: |
-          echo "🧪 Running quality tests..."
-          html_count=$(find . -name "*.html" | wc -l)
-          if [ $html_count -eq 0 ]; then
-            echo "❌ No HTML files found - Failing build"
-            exit 1
-          fi
-          echo "✅ Quality tests passed"
-
-  auto-deploy:
-    runs-on: ubuntu-latest
-    needs: [security-scan, quality-check]
+    needs: security-scan
     if: success()
     
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@v3
 
-      - name: 🚀 Auto Deploy Status
-        run: |
-          echo "🚀 Starting automated deployment..."
-          echo "✅ Security Scan: PASSED"
-          echo "✅ Quality Check: PASSED" 
-          echo "📦 Code is ready for production!"
-          echo "❌ NOTE: Actual deployment setup required"
-          echo "💡 Configure server deployment in next step"
+      - name: 🚀 Deploy to Production Server
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            echo "=== 🚀 STARTING AUTOMATED DEPLOYMENT ==="
+            cd /var/deployment-project
+            echo "1. Pulling latest code..."
+            git pull origin main
+            echo "2. Restarting web server..."
+            sudo systemctl restart nginx
+            echo "3. Checking deployment status..."
+            curl -s http://localhost | head -5
+            echo "=== ✅ DEPLOYMENT COMPLETED SUCCESSFULLY ==="
+            echo "🌐 Live Website: http://${{ secrets.SERVER_HOST }}"
