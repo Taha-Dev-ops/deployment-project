@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Taha Deployment App</title>
+    <style>
+        body { font-family: Arial; margin: 40px; background: #f0f8ff; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; background: white; border-radius: 10px; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Taha Deployment App</h1>
+        <p class="success">✅ Version: 1.0.0</p>
+        <p><strong>Deployed via CI/CD</strong></p>
+        <p><strong>Status:</strong> <span class="success">RUNNING</span></p>
+        <p><strong>Time:</strong> <span id="time"></span></p>
+    </div>
+    <script>
+        document.getElementById('time').textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html>
+<p>CI/CD Test Deployment</p>
+<!-- CI/CD Test -->
+<!-- Deployed via Self-Hosted Runner -->
