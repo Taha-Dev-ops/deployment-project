@@ -1,47 +1,283 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Taha Live Deployment App</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Taha Deployment Dashboard</title>
     <style>
-        body { font-family: Arial; margin: 40px; background: #f0f0f0; }
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .success { color: green; font-weight: bold; }
-        .live { color: red; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0.5; } }
-        #liveTime { color: blue; font-weight: bold; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --accent: #00ffff;
+            --accent-glow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --success: #00ff88;
+            --warning: #ffaa00;
+            --danger: #ff0066;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, var(--accent), #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--accent-glow);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+        }
+
+        .card h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .status-running {
+            background: var(--success);
+            color: var(--bg-primary);
+            animation: pulse 2s infinite;
+        }
+
+        .time-display {
+            font-family: 'Courier New', monospace;
+            font-size: 1.4rem;
+            color: var(--accent);
+            text-shadow: var(--accent-glow);
+            margin: 1rem 0;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .metric-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5rem; }
+            .dashboard { grid-template-columns: 1fr; }
+            .metrics { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Taha Live Deployment App</h1>
-        <p class="success">✅ Version: 2.0.0</p>
-        <p><strong>Deployed via:</strong> <span class="live">CLOUD CI/CD</span></p>
-        <p><strong>Status:</strong> <span class="success">LIVE & UPDATED</span></p>
-        <p><strong>Server Time:</strong> <span id="liveTime">Loading...</span></p>
-        <p><strong>Last Refresh:</strong> <span id="refreshTime">Loading...</span></p>
-        <p><strong>Deployment Count:</strong> <span id="counter">1</span></p>
+        <div class="header floating">
+            <h1>🚀 Taha Deployment Hub</h1>
+            <p class="subtitle">Real-time Deployment Monitoring Dashboard</p>
+        </div>
+
+        <div class="dashboard">
+            <div class="card">
+                <h3>📊 Deployment Info</h3>
+                <div class="stat">v2.0.0</div>
+                <p>Cloud CI/CD Pipeline</p>
+                <div class="status-badge status-running">Live & Running</div>
+            </div>
+
+            <div class="card">
+                <h3>🕒 Live Server Time</h3>
+                <div id="liveTime" class="time-display">Loading...</div>
+            </div>
+
+            <div class="card">
+                <h3>📈 System Metrics</h3>
+                <div class="metrics">
+                    <div class="metric-item">
+                        <div id="deploymentCount" class="metric-value">1</div>
+                        <div class="metric-label">Deployments</div>
+                    </div>
+                    <div class="metric-item">
+                        <div id="uptime" class="metric-value">100%</div>
+                        <div class="metric-label">Uptime</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🔧 Last Activity</h3>
+                <div id="lastRefresh" class="time-display">Loading...</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🚀 Powered by Taha DevOps | 2025 Edition</p>
+        </div>
     </div>
 
     <script>
+        // Live time updater
         function updateLiveTime() {
             const now = new Date();
-            const timeString = now.toLocaleString();
-            document.getElementById('liveTime').textContent = timeString;
-            document.getElementById('refreshTime').textContent = now.toLocaleTimeString();
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            };
+            document.getElementById('liveTime').textContent = now.toLocaleString('en-US', options);
         }
 
+        // Update refresh time
+        function updateRefreshTime() {
+            const now = new Date();
+            document.getElementById('lastRefresh').textContent = now.toLocaleTimeString();
+        }
+
+        // Increment deployment counter
         function incrementCounter() {
-            let counter = document.getElementById('counter');
-            counter.textContent = parseInt(counter.textContent) + 1;
+            let counter = document.getElementById('deploymentCount');
+            let count = parseInt(counter.textContent);
+            counter.textContent = count + 1;
         }
 
-        // Start time updates
-        updateLiveTime();
-        incrementCounter();
-        setInterval(updateLiveTime, 1000);
+        // Initialize everything
+        function initDashboard() {
+            updateLiveTime();
+            updateRefreshTime();
+            incrementCounter();
+            
+            // Update time every second
+            setInterval(updateLiveTime, 1000);
+            
+            console.log('🚀 Taha Dashboard initialized successfully!');
+        }
 
-        // Debug info
-        console.log("Live time updater started successfully!");
+        // Start the dashboard
+        document.addEventListener('DOMContentLoaded', initDashboard);
     </script>
 </body>
 </html>

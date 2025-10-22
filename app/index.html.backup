@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Taha Live Deployment App</title>
+    <style>
+        body { font-family: Arial; margin: 40px; background: #f0f0f0; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .success { color: green; font-weight: bold; }
+        .live { color: red; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0.5; } }
+        #liveTime { color: blue; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Taha Live Deployment App</h1>
+        <p class="success">✅ Version: 2.0.0</p>
+        <p><strong>Deployed via:</strong> <span class="live">CLOUD CI/CD</span></p>
+        <p><strong>Status:</strong> <span class="success">LIVE & UPDATED</span></p>
+        <p><strong>Server Time:</strong> <span id="liveTime">Loading...</span></p>
+        <p><strong>Last Refresh:</strong> <span id="refreshTime">Loading...</span></p>
+        <p><strong>Deployment Count:</strong> <span id="counter">1</span></p>
+    </div>
+
+    <script>
+        function updateLiveTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString();
+            document.getElementById('liveTime').textContent = timeString;
+            document.getElementById('refreshTime').textContent = now.toLocaleTimeString();
+        }
+
+        function incrementCounter() {
+            let counter = document.getElementById('counter');
+            counter.textContent = parseInt(counter.textContent) + 1;
+        }
+
+        // Start time updates
+        updateLiveTime();
+        incrementCounter();
+        setInterval(updateLiveTime, 1000);
+
+        // Debug info
+        console.log("Live time updater started successfully!");
+    </script>
+</body>
+</html>
